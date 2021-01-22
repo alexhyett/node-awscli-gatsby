@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:15.6
 
 RUN apt-get update && apt-get install -y python3 libvips
 RUN curl -sO https://bootstrap.pypa.io/get-pip.py
