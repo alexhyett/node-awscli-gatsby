@@ -14,7 +14,7 @@ RUN pip install awscli
 
 RUN npm install --unsafe-perm -g gatsby-cli sharp
 
-RUN apk add --no-cache autoconf libtool automake make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev libpng \
+RUN apk add --upgrade --no-cache autoconf libtool automake make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev libpng \
     && rm -fR /var/cache/apk/*
 
 RUN npm install --unsafe-perm -g mozjpeg@7.0.0
