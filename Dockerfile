@@ -14,5 +14,6 @@ RUN pip install awscli
 
 RUN npm install --unsafe-perm -g gatsby-cli sharp
 
+RUN apk add --no-cache autoconf && rm -fR /var/cache/apk/*
 
 CMD ["node" ]
