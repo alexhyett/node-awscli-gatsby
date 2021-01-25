@@ -2,8 +2,8 @@ FROM node:14-alpine3.12
 
 USER root
 
-RUN apk add --no-cache python3-dev python3 make g++ build-base git bash curl \
-    && apk add vips-dev fftw-dev glib-dev \
+RUN apk add --no-cache python3-dev python3 build-base git gettext bash curl glib-dev libffi-dev libressl-dev \
+    && apk add vips-dev fftw-dev \
     --update-cache \
     --repository https://alpine.global.ssl.fastly.net/alpine/edge/community \
     --repository https://alpine.global.ssl.fastly.net/alpine/edge/main \
