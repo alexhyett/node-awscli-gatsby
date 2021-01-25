@@ -11,6 +11,6 @@ RUN apk add --no-cache python3 make g++ curl git && \
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 RUN pip install awscli
 
-RUN npm install -g gatsby-cli sharp
+RUN npm install --unsafe-perm -g gatsby-cli sharp
 
 CMD ["node" ]
