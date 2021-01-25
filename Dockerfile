@@ -1,5 +1,7 @@
 FROM node:15-alpine3.10
 
+USER root
+
 RUN apk add --no-cache python3-dev python3 make g++ \
     && apk add vips-dev fftw-dev build-base git bash curl \
     --update-cache \
