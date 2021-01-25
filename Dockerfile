@@ -1,9 +1,15 @@
-FROM node:15.6
+FROM node:15-alpine3.10
 
-RUN apt-get update && apt-get install -y python3 libvips
-RUN curl -sO https://bootstrap.pypa.io/get-pip.py
-RUN python3 get-pip.py
+RUN apk add --no-cache python3-dev python3 make g++ \
+    && apk add vips-dev fftw-dev build-base git bash curl \
+    --update-cache \
+    --repository https://alpine.global.ssl.fastly.net/alpine/v3.10/community \
+    --repository https://alpine.global.ssl.fastly.net/alpine/v3.10/main \
+    && rm -fR /var/cache/apk/*
 
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 RUN pip install awscli
 
-CMD ["node"]
+RUN npm install -g gatsby-cli
+
+CMD ["node" ]
