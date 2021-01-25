@@ -12,9 +12,11 @@ RUN apk add --no-cache python3-dev python3 build-base git gettext bash curl glib
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 RUN pip install awscli
 
-RUN npm install --unsafe-perm -g gatsby-cli sharp mozjpeg@7.0.0
+RUN npm install --unsafe-perm -g gatsby-cli sharp
 
 RUN apk add --no-cache autoconf libtool automake make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev \
     && rm -fR /var/cache/apk/*
+
+RUN npm install --unsafe-perm -g mozjpeg@7.0.0
 
 CMD ["node" ]
