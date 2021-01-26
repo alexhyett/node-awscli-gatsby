@@ -4,8 +4,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
     apt-get update -qq; \
-    apt-get install -qq --no-install-recommends ca-certificates curl build-essential python2 libglib2.0-dev musl-dev libsass-dev libpng-dev python3; \
+    apt-get install -qq --no-install-recommends ca-certificates curl build-essential libglib2.0-dev musl-dev libsass-dev libpng-dev python3; \
     rm -rf /var/lib/apt/lists/*
+
+RUN curl -Ok https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
+RUN pip install awscli
 
 RUN set -eux; \
     update-ca-certificates -f; \
@@ -25,7 +28,7 @@ RUN set -eux; \
     rm -rf vips-8.10.5.tar.gz libwebp-1.1.0.tar.gz mozjpeg-v4.0.0.tar.gz
 
 RUN set -eux; \
-    npm i -g --unsafe-perm  \
+    npm install -g --unsafe-perm  \
     gatsby-cli \
     node-gyp \
     node-sass \
