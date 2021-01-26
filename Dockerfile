@@ -1,22 +1,38 @@
-FROM node:14-alpine3.12
+FROM node:14-buster-slim
 
-USER root
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apk add --no-cache python3-dev python3 build-base git gettext bash curl glib-dev libffi-dev libressl-dev \
-    && apk add vips-dev fftw-dev \
-    --update-cache \
-    --repository https://alpine.global.ssl.fastly.net/alpine/edge/community \
-    --repository https://alpine.global.ssl.fastly.net/alpine/edge/main \
-    && rm -fR /var/cache/apk/*
+RUN set -eux; \
+    apt-get update -qq; \
+    apt-get install -qq --no-install-recommends ca-certificates curl build-essential python2 libglib2.0-dev musl-dev libsass-dev libpng-dev python3; \
+    rm -rf /var/lib/apt/lists/*
 
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
-RUN pip install awscli
+RUN set -eux; \
+    update-ca-certificates -f; \
+    cd /opt; \
+    curl -L -O https://github.com/libvips/libvips/releases/download/v8.10.5/vips-8.10.5.tar.gz; \
+    tar xf vips-8.10.5.tar.gz; \
+    cd vips-8.10.5; ./configure && make && make install && ldconfig; \
+    cd /opt; \
+    curl -L -O https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.1.0.tar.gz; \
+    tar xzf libwebp-1.1.0.tar.gz; \
+    cd libwebp-1.1.0; ./configure && make && make install && ldconfig; \
+    cd /opt; \
+    curl -L https://github.com/mozilla/mozjpeg/archive/v4.0.0.tar.gz -o mozjpeg-v4.0.0.tar.gz; \
+    tar xzf mozjpeg-v4.0.0.tar.gz; \
+    cd mozjpeg-4.0.0; cmake -G"Unix Makefiles" . && make && make install && ldconfig; \
+    cd /opt; \
+    rm -rf vips-8.10.5.tar.gz libwebp-1.1.0.tar.gz mozjpeg-v4.0.0.tar.gz
 
-RUN npm install --unsafe-perm -g gatsby-cli sharp
+RUN set -eux; \
+    npm i -g --unsafe-perm  \
+    gatsby-cli \
+    node-gyp \
+    node-sass \
+    sharp
 
-RUN apk add --upgrade --no-cache autoconf libtool automake make tiff jpeg zlib zlib-dev pkgconf nasm file gcc musl-dev libpng \
-    && rm -fR /var/cache/apk/*
-
-RUN npm install --unsafe-perm -g mozjpeg@7.0.0
+RUN set -eux; \
+    apt-get autoremove -qq; \
+    apt-get autoclean
 
 CMD ["node" ]
